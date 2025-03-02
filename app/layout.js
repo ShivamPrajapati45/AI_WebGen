@@ -12,7 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="overflow-y-scroll [&::-webkit-scrollbar]:hidden">
         <ConvexClientProvider>
           <Provider>
             {children}

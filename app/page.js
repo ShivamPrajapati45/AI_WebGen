@@ -2,7 +2,7 @@ import Hero from "@/components/custom/Hero";
 
 export default function Home() {
   return (
-    <div>
+    <div className="w-full flex justify-center">
       <Hero/>
     </div>
   );

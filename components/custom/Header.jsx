@@ -24,7 +24,7 @@ const Header = () => {
     }
 
     return (
-        <div className='flex p-4 justify-between items-center'>
+        <div className='flex py-3 justify-between px-10 items-center'>
             <Link href={'/'}>
                 <Image src={'/vercel.svg'} height={40} width={40} alt='logo' />
             </Link>
@@ -35,11 +35,11 @@ const Header = () => {
                     backgroundColor:Colors.BLUE
                 }} >Get Started</Button>
             </div> : path?.includes('workspace') && <div className='flex items-center gap-2'>
-                <Button onClick={() => onActionBtn('export')} variant={'ghost'}><LucideDownload/>Export</Button>
-                <Button onClick={() => onActionBtn('deploy')} className={'bg-blue-500 text-white hover:bg-blue-600'}><Rocket/> Deploy</Button>
-                {userDetail && <Image  src={userDetail?.picture} alt='user' width={30} height={30} className='rounded-full w-[30px]'/>}
+                <Button onClick={() => onActionBtn('export')} className={'cursor-pointer text-white hover:bg-gray-700 transition-all duration-300'}><LucideDownload/>Export</Button>
+                <Button onClick={() => onActionBtn('deploy')} className={'bg-blue-500 cursor-pointer text-white hover:bg-blue-600'}><Rocket/> Deploy</Button>
             </div>
             }
+            {userDetail && <Image src={userDetail?.picture} alt='user' width={40} height={40} className='rounded-full'/>}
         </div>
     )
 }

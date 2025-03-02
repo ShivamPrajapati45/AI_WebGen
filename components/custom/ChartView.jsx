@@ -13,7 +13,6 @@ import { useParams } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 import ReactMarkDown from 'react-markdown'
 import { useSidebar } from '../ui/sidebar';
-import { updateToken } from '@/convex/users';
 import { toast } from 'sonner';
 
 export const countToken = (inputText) => {
@@ -99,18 +98,20 @@ const ChartView = () => {
     }
 
     return (
-        <div className='relative h-[85vh] flex flex-col'>
-            <div className='flex-1 overflow-y-scroll pl-5'>
+        <div className='relative h-[85vh] py-3 w-full flex flex-col px-5'>
+            <div className='flex-1 overflow-y-scroll thin-scrollbar '>
                 {messages?.length > 0 && messages?.map((msg,index) => (
                     <div 
                         style={{
-                            backgroundColor: Colors.BACKGROUND
+                            backgroundColor: '#272829'
                         }}
                         key={index} 
-                        className='p-3 rounded-lg mb-2 flex items-center gap-2 leading-7'
+                        className='p-3 rounded-lg mb-2 text-sm flex items-center gap-2 leading-7'
                     >
                         {msg?.role === 'user' && <Image src={userDetail?.picture} alt='userImage' width={35} height={35} className='rounded-full' />}
-                        <ReactMarkDown>{msg?.content}</ReactMarkDown>
+                        <span className=''>
+                            <ReactMarkDown>{msg?.content}</ReactMarkDown>
+                        </span>
                     </div>
                 ))}
                 {loading && <div style={{
@@ -122,29 +123,27 @@ const ChartView = () => {
             </div>
 
             {/* input section */}
-            <div className='flex gap-2 items-end'>
-                {userDetail && <Image onClick={toggleSidebar} src={userDetail?.picture} width={30} height={30} className='rounded-full cursor-pointer'/>}
+            <div className='flex gap-2 relative items-center justify-center'>
+                
                 <div 
-                    style={{backgroundColor: Colors.BACKGROUND}} 
-                    className='p-5 border rounded-xl max-w-xl w-full mt-3'
+                    style={{backgroundColor: '#272a2b'}} 
+                    className='p-2 border border-[#343738] flex items-start gap-4 justify-between rounded-xl max-w-xl w-full mt-2'
                 >
-                    <div className='flex gap-2'>
+                    {userDetail && <Image alt='user' onClick={toggleSidebar} src={userDetail?.picture} width={32} height={32} className='rounded-full cursor-pointer'/>}
+                    <div className='flex gap-3 w-full items-start'>
                         <textarea 
                             value={userInput}
                             onChange={(e) => setUserInput(e.target.value)}
                             placeholder={Lookup.INPUT_PLACEHOLDER} 
-                            className='resize-none w-full h-24 max-h-28 outline-none bg-transparent'
+                            className='resize-none flex-1/2 w-full h-16 max-h-28 outline-none bg-transparent'
                         />
-                        {userInput && <ArrowRight 
+                        {userInput && <ArrowRight
                             onClick={() => onGenerate(userInput)}
-                            className='bg-blue-500 p-2 h-8 w-8 rounded-md'
+                            className='bg-blue-500 hover:bg-blue-600 transition-all duration-300 rounded-full p-2 cursor-pointer h-8 w-8'
                         />}
-                        
-                    </div>
-                    <div>
-                        <Link className='h-5 w-5 cursor-pointer hover:opacity-80 transition-opacity duration-300' />
                     </div>
                 </div>
+
             </div>
 
 

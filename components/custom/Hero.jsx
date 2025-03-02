@@ -48,7 +48,7 @@ const Hero = () => {
     
 
     return (
-        <div className='flex flex-col items-center justify-center mt-10 gap-2'>
+        <div className='flex flex-col items-center justify-center gap-2'>
             <h2 className='font-bold text-4xl'>{Lookup.HERO_HEADING}</h2>
             <p className='text-gray-400 font-medium'>{Lookup.HERO_DESC}</p>
 
@@ -66,7 +66,7 @@ const Hero = () => {
                     />}
                     
                 </div>
-                <div>
+                <div className='hidden'>
                     <Link className='h-5 w-5 cursor-pointer hover:opacity-80 transition-opacity duration-300' />
                 </div>
             </div>
