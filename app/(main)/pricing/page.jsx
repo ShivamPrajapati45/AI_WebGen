@@ -1,4 +1,5 @@
 'use client'
+import PricingModel from '@/components/custom/PricingModel';
 import { UserDetailContext } from '@/context/userDetailContext'
 import Colors from '@/data/Colors';
 import Lookup from '@/data/Lookup';
@@ -22,7 +23,7 @@ const page = () => {
                     <p>Upgrade your plan below</p>
                 </div>
             </div>
-
+            <PricingModel/>
         </div>
     )
 }

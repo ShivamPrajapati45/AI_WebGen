@@ -26,7 +26,7 @@ const SideBarFooter = () => {
     ];
 
     const optionClick = (option) => {
-        router.push(option.path);
+        router.push(option?.path);
     }
 
     
@@ -34,7 +34,7 @@ const SideBarFooter = () => {
         <div className=''>
             {options.map((option,index) => (
                 <Button 
-                    onClick={() => router.push(option?.path)} 
+                    onClick={() => optionClick(option)}
                     variant={'ghost'} 
                     className={'w-full text-base bg-[#141313] cursor-pointer hover:bg-[#242424] text-white flex justify-start my-1'} 
                     key={index}

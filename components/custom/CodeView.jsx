@@ -29,7 +29,7 @@ const CodeView = () => {
     const UpdateToken = useMutation(api.users.updateToken);
 
     useEffect(() => {
-        // id&&getFiles();
+        id&&getFiles();
     },[id]);
 
     useEffect(() =>{
@@ -52,7 +52,7 @@ const CodeView = () => {
         if(messages?.length > 0){
             const role = messages[messages?.length - 1].role;
             if(role === 'user'){
-                // generateAiCode();
+                generateAiCode();
             }
         }
     },[messages]);
