@@ -8,14 +8,13 @@ import SideBarFooter from './SideBarFooter'
 
 const AppSideBar = () => {
     return (
-        <Sidebar>
-            <SidebarHeader>
-                <Image src={'/vercel.svg'} alt='logo' width={30} height={30}/>
-                <Button className={'mt-5'}>
-                    <MessageCircleCode/>Start New Chat
+        <Sidebar className={'bg-[#121212] outline-none border-none outline-none'}>
+            <SidebarHeader className={''}>
+                <Button className={'mt-5 bg-white px-2 py-1 text-black cursor-pointer hover:bg-gray-100 transition-all flex items-center'}>
+                    <MessageCircleCode className=''/> <span className='text-lg'>Start New Chat</span>
                 </Button>
             </SidebarHeader>
-            <SidebarContent className={'p-5'}>
+            <SidebarContent className={'thin-scrollbar overflow-y-scroll'}>
                 <SidebarGroup />
                     <WorkSpaceHistory/>
                 <SidebarGroup />

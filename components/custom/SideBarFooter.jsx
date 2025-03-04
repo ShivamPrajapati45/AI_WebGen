@@ -31,9 +31,14 @@ const SideBarFooter = () => {
 
     
     return (
-        <div className='p-2 mb-10'>
+        <div className=''>
             {options.map((option,index) => (
-                <Button onClick={() => router.push(option?.path)} variant={'ghost'} className={'w-full flex justify-start my-3'} key={index}>
+                <Button 
+                    onClick={() => router.push(option?.path)} 
+                    variant={'ghost'} 
+                    className={'w-full text-base bg-[#141313] cursor-pointer hover:bg-[#242424] text-white flex justify-start my-1'} 
+                    key={index}
+                >
                     <option.icon/>
                     {option.name}
                 </Button>

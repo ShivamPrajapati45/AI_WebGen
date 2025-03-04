@@ -5,13 +5,14 @@ import Prompt from '@/data/Prompt'
 import { SandpackCodeEditor, SandpackFileExplorer, SandpackLayout, SandpackPreview, SandpackProvider } from '@codesandbox/sandpack-react'
 import axios from 'axios'
 import { useConvex, useMutation } from 'convex/react'
-import { Loader2Icon } from 'lucide-react'
+import { CodeXml, Eye, Loader2Icon } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 import { countToken } from './ChartView'
 import { UserDetailContext } from '@/context/userDetailContext'
 import SandpackPreviewClient from './SandpackPreviewClient'
 import { ActionContext } from '@/context/actionContext'
+import { Button } from '../ui/button'
 
 
 const CodeView = () => {
@@ -28,7 +29,7 @@ const CodeView = () => {
     const UpdateToken = useMutation(api.users.updateToken);
 
     useEffect(() => {
-        id&&getFiles();
+        // id&&getFiles();
     },[id]);
 
     useEffect(() =>{
@@ -51,7 +52,7 @@ const CodeView = () => {
         if(messages?.length > 0){
             const role = messages[messages?.length - 1].role;
             if(role === 'user'){
-                generateAiCode();
+                // generateAiCode();
             }
         }
     },[messages]);
@@ -86,14 +87,20 @@ const CodeView = () => {
 
     return (
         <div className='relative'>
-            <div className='bg-[#181818] w-full p-2 border'>
-                <div className='flex items-center flex-wrap shrink-0 bg-black p-1 justify-center rounded-full'>
-                    <h2
+            <div className='bg-[#181818] w-full py-1 px-2 rounded-lg'>
+                <div className='flex items-center w-full flex-wrap shrink-0 py-1 px-3 gap-3 rounded-full'>
+                    <button
                         onClick={() => setActiveTab('code')}
-                        className={`text-sm cursor-pointer uppercase ${activeTab === 'code' && 'text-blue-500 bg-blue-500 p-1  px-2 bg-opacity-25'}`}>Code</h2>
-                    <h2 
+                        className={`flex text-sm items-center font-semibold gap-2 justify-center cursor-pointer px-2 py-1 bg-[#30302f] uppercase rounded-full ${activeTab === 'code' && 'text-black bg-white'}`}>
+                            <CodeXml size={20} className={`${activeTab == 'code' && 'text-purple-500 font-bold'}`}/> 
+                            <span>code</span>
+                    </button>
+                    <button 
                         onClick={() => setActiveTab('preview')}
-                        className={`text-sm cursor-pointer uppercase ${activeTab === 'preview' && 'text-blue-500 bg-blue-500 p-1  px-2 bg-opacity-25'}`}>preview</h2>
+                        className={`flex text-sm font-semibold items-center justify-center gap-2 cursor-pointer bg-[#30302f] uppercase rounded-full px-2 py-1 ${activeTab === 'preview' && 'text-black bg-white'}`}>
+                            <Eye size={20} className={`${activeTab == 'preview' && 'text-purple-500 font-bold'}`}/> 
+                            <span>preview</span>
+                    </button>
                 </div>
             </div>
             <SandpackProvider 
@@ -108,15 +115,14 @@ const CodeView = () => {
                 options={{
                     externalResources: ['https://unpkg.com/@tailwindcss/browser@4']
                 }}
-
             >
                 <SandpackLayout>
                     {activeTab == 'code' ? <>
-                        <SandpackFileExplorer style={{height: '80vh'}}/>
-                        <SandpackCodeEditor style={{height: '80vh'}}/>
+                        <SandpackFileExplorer style={{height: '75vh'}}/>
+                        <SandpackCodeEditor style={{height: '75vh'}}/>
                     </> :
                     <>
-                        <SandpackPreviewClient/>
+                        <SandpackPreviewClient style={{height: '70vh'}}/>
                     </>
                     }
                 </SandpackLayout>

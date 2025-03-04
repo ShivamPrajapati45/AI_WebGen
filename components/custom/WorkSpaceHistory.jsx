@@ -24,9 +24,9 @@ const WorkSpaceHistory = () => {
     }   
 
     return (
-        <div>
-            <h2 className='font-medium text-lg'>Your Chats</h2>
-            <div>
+        <div className='flex flex-col'>
+            <h2 className='font-medium text-lg text-center'>Your Chats</h2>
+            <div className='px-1 thin-scrollbar overflow-y-scroll'>
                 {workSpacesList&&workSpacesList?.map((workspace,index) => (
                     <Link
                         href={`/workspace/${workspace?._id}`}
@@ -34,7 +34,7 @@ const WorkSpaceHistory = () => {
                     >
                         <h2 
                             onClick={toggleSidebar} 
-                            className='text-sm text-gray-400 mt-2 font-light cursor-pointer hover:text-white'>
+                            className='text-sm text-gray-100 font-semibold px-2 py-1 text-center bg-[#222222] hover:bg-[#333666] my-1.5 rounded-md cursor-pointer'>
                                 {workspace?.messages[0]?.content}
                             </h2>
                     </Link>

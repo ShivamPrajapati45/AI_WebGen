@@ -40,7 +40,7 @@ const Provider = ({children}) => {
     };
 
     return (
-        <div>
+        <div className=''>
             <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
                 <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}}>
             <UserDetailContext.Provider value={{userDetail,setUserDetail}}>
@@ -52,7 +52,7 @@ const Provider = ({children}) => {
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <Header/>
+                        <Header/>
                     <SidebarProvider defaultOpen={false}>
                         <AppSideBar/>
                         {children}
