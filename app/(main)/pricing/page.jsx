@@ -14,9 +14,9 @@ const page = () => {
 
             <div style={{
                 backgroundColor:Colors.BACKGROUND
-            }} className='p-5 border rounded-full w-full flex justify-between mt-7 items-center'>
+            }} className='py-2 px-8 border rounded-full w-full flex justify-between mt-7 items-center'>
                 <h2 className='text-lg'>
-                    <span className='font-bold'>{userDetail?.token}</span>
+                    <span className='font-bold'>{userDetail?.token ? userDetail?.token : 0}</span>
                 </h2>
                 <div className=''>
                     <h2 className='font-medium'>Need more token ?</h2>

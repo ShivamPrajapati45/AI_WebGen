@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react'
 
 const Provider = ({children}) => {
     const [messages, setMessages] = useState();
-    const [userDetail, setUserDetail] = useState();
+    const [userDetail, setUserDetail] = useState(null);
     const [action, setAction] = useState(); 
     const convex = useConvex();
     const router = useRouter();
@@ -42,7 +42,7 @@ const Provider = ({children}) => {
     return (
         <div className=''>
             <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
-                <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}}>
+            <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}}>
             <UserDetailContext.Provider value={{userDetail,setUserDetail}}>
             <MessagesContext.Provider value={{messages,setMessages}}>
                 <ActionContext.Provider value={{action,setAction}}>
@@ -52,11 +52,7 @@ const Provider = ({children}) => {
                     enableSystem
                     disableTransitionOnChange
                 >
-                        <Header/>
-                    <SidebarProvider defaultOpen={false}>
-                        <AppSideBar/>
                         {children}
-                    </SidebarProvider>
                 </NextThemeProvider>
                 </ActionContext.Provider>
             </MessagesContext.Provider>

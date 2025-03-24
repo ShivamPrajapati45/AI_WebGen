@@ -7,7 +7,7 @@ import Lookup from '@/data/Lookup';
 import Prompt from '@/data/Prompt';
 import axios from 'axios';
 import { useConvex, useMutation } from 'convex/react';
-import { ArrowRight, Link, Loader2Icon } from 'lucide-react';
+import { ArrowRight, ArrowUp, Link, Loader2Icon } from 'lucide-react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
@@ -137,7 +137,7 @@ const ChartView = () => {
                             placeholder={Lookup.INPUT_PLACEHOLDER} 
                             className='resize-none flex-1/2 w-full h-16 max-h-28 outline-none bg-transparent'
                         />
-                        {userInput && <ArrowRight
+                        {userInput && <ArrowUp
                             onClick={() => onGenerate(userInput)}
                             className='bg-blue-500 hover:bg-blue-600 transition-all duration-300 rounded-full p-2 cursor-pointer h-8 w-8'
                         />}
