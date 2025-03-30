@@ -23,10 +23,10 @@
         responseMimeType: "application/json",
     };
     
-        export const chatSession = model.startChat({
-            generationConfig,
-            history: [],
-        }); 
+    export const chatSession = model.startChat({
+        generationConfig,
+        history: [],
+    }); 
     
         export const genAICode = model.startChat({
             generationConfig: CodeGenerateConfig,
@@ -45,8 +45,5 @@
                 },
             ],
         })
-        // const result = await chatSession.sendMessage("INSERT_INPUT_HERE");
-        // console.log(result.response.text());
-    
 
     

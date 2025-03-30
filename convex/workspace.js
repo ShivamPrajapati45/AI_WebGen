@@ -23,7 +23,7 @@ export const getWorkSpace = query({
         const result = await ctx.db.get(args.workspaceId);
         return result;
     }
-})
+});
 
 export const updateMessages = mutation({
     args:{

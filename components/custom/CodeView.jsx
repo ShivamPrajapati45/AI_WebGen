@@ -13,6 +13,7 @@ import { UserDetailContext } from '@/context/userDetailContext'
 import SandpackPreviewClient from './SandpackPreviewClient'
 import { ActionContext } from '@/context/actionContext'
 import { Button } from '../ui/button'
+import toast from 'react-hot-toast'
 
 
 const CodeView = () => {
@@ -37,15 +38,21 @@ const CodeView = () => {
     },[action]);
 
     const getFiles = async () => {
-        setLoading(true);
-        const result = await convex.query(api.workspace.getWorkSpace,{
-            workspaceId: id
-        });
+        try{
+            setLoading(true);
+            const result = await convex.query(api.workspace.getWorkSpace,{
+                workspaceId: id
+            });
 
-        const mergedFiles = {...Lookup.DEFAULT_FILE,...result?.fileData};
-        setFiles(mergedFiles);
-        setLoading(false);
-
+            const mergedFiles = {...Lookup.DEFAULT_FILE,...result?.fileData};
+            setFiles(mergedFiles);
+            setLoading(false);
+        }catch(err){
+            toast.error('Something went wrong while fetching files')
+            console.log('Error in fetching files',err);
+        }finally{
+            setLoading(false);
+        }
     }
 
     useEffect(() => {
@@ -58,31 +65,39 @@ const CodeView = () => {
     },[messages]);
 
     const generateAiCode = async () => {
-        setLoading(true);
-        const prompt = JSON.stringify(messages)+" "+Prompt.CODE_GEN_PROMPT;
-        const result = await axios.post('/api/gen-ai-code', {prompt});
-        const aiResp = result?.data
-
-        const mergedFiles = {...Lookup.DEFAULT_FILE,...aiResp?.files};
-        setFiles(mergedFiles);
-        await updateFiles({
-            workspaceId: id,
-            files: aiResp?.files,
-        });
-
-        const token = Number(userDetail?.token) - Number(countToken(JSON.stringify(aiResp)));
-                // Updating token
-        await UpdateToken({
-            userId: userDetail?._id,
-            token: token
-        });
-        setUserDetail(prev => ({
-            ...prev,
-            token:token
-        }));
-
-        setActiveTab('code');
-        setLoading(false);
+        try{
+            setLoading(true);
+            const prompt = JSON.stringify(messages)+" "+Prompt.CODE_GEN_PROMPT;
+            const result = await axios.post('/api/gen-ai-code', {prompt});
+            const aiResp = result?.data
+    
+            const mergedFiles = {...Lookup.DEFAULT_FILE,...aiResp?.files};
+            setFiles(mergedFiles);
+            await updateFiles({
+                workspaceId: id,
+                files: aiResp?.files,
+            });
+    
+            const token = Number(userDetail?.token) - Number(countToken(JSON.stringify(aiResp)));
+                    // Updating token
+            await UpdateToken({
+                userId: userDetail?._id,
+                token: token
+            });
+            setUserDetail(prev => ({
+                ...prev,
+                token:token
+            }));
+    
+            setActiveTab('code');
+            setLoading(false);
+        }catch(err){
+            toast.error('Error in generating code')
+            console.log('Error in generating code',err);
+        }finally{
+            setLoading(false);
+        }
+        
     }; 
 
     return (
