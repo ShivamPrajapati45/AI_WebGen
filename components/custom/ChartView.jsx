@@ -32,7 +32,7 @@ const ChartView = () => {
 
     useEffect(() => {
         id && getWorkSpaceData();
-    },[id]);
+    },[id,userDetail]);
 
     // use to get workspace data using workspace id
     const getWorkSpaceData = async () => {
@@ -53,34 +53,44 @@ const ChartView = () => {
 
     // use to get ai response
     const getAiResponse = async () => {
-        setLoading(true);
-        const prompt = JSON.stringify(messages)+Prompt.CHAT_PROMPT;
-        const result = await axios.post('/api/ai-chat',{
-            prompt: prompt
-        });
-        const aiRes = {
-            role: 'ai',
-            content: result.data.result
-        }
-        setMessages(prev => [...prev,aiRes]);
-        
-        await UpdateMessages({
-            messages: [...messages,aiRes],
-            workspaceId: id
-        })
+        try{
 
-        const token = Number(userDetail?.token) - Number(countToken(JSON.stringify(aiRes)));
-        setUserDetail(prev => ({
-            ...prev,
-            token:token
-        }));
-        // Updating token
-        await UpdateToken({
-            userId: userDetail?._id,
-            token: token
-        })
+            setLoading(true);
+            const prompt = JSON.stringify(messages)+Prompt.CHAT_PROMPT;
+            const result = await axios.post('/api/ai-chat',{
+                prompt: prompt
+            });
+            const aiRes = {
+                role: 'ai',
+                content: result.data.result
+            }
+            setMessages(prev => [...prev,aiRes]);
+            
+            await UpdateMessages({
+                messages: [...messages,aiRes],
+                workspaceId: id
+            })
+
+            const token = Number(userDetail?.token) - Number(countToken(JSON.stringify(aiRes)));
+            setUserDetail(prev => ({
+                ...prev,
+                token:token
+            }));
+            // Updating token
+            await UpdateToken({
+                userId: userDetail?._id,
+                token: token
+            })
+            
+            setLoading(false);
+        }catch(err){
+            toast.error('Something went wrong while generating response')
+            console.log('Error in getting ai response',err);
+        }finally{
+            toast.error('Something went wrong while generating response')
+            setLoading(false);
+        }
         
-        setLoading(false);
 
         // console.log(result.data.result);
     }
