@@ -98,7 +98,7 @@ const ChartView = () => {
     }
 
     return (
-        <div className='relative h-[85vh] py-1 w-full flex flex-col px-5'>
+        <div className='relative h-[85vh]  py-1 w-full flex flex-col md:px-5 px-2'>
             <div className='flex-1 overflow-y-scroll thin-scrollbar '>
                 {messages?.length > 0 && messages?.map((msg,index) => (
                     <div 
@@ -106,28 +106,28 @@ const ChartView = () => {
                             backgroundColor: '#272829'
                         }}
                         key={index} 
-                        className='p-3 rounded-lg mb-2 text-sm flex items-center gap-2 leading-7'
+                        className='md:p-3 p-2 rounded-lg mb-2 text-sm flex items-center gap-2 leading-7'
                     >
                         {msg?.role === 'user' && <Image src={userDetail?.picture} alt='userImage' width={35} height={35} className='rounded-full' />}
-                        <span className=''>
+                        <span className=' md:text-base text-wrap'>
                             <ReactMarkDown>{msg?.content}</ReactMarkDown>
                         </span>
                     </div>
                 ))}
                 {loading && <div style={{
                     backgroundColor:Colors.BACKGROUND
-                }} className='p-3 rounded-lg mb-2 flex items-start gap-3'>
+                }} className='md:p-3 p-2 rounded-lg md:mb-2 flex items-start gap-3'>
                     <Loader2Icon className='animate-spin'/>
-                    <h2>Generating response...</h2>
+                    <h2 className=''>Generating response...</h2>
                 </div> }
             </div>
 
             {/* input section */}
-            <div className='flex gap-2 relative items-center justify-center'>
+            <div className='flex mb-2 md:mb-0  gap-2 relative items-center justify-center'>
                 
                 <div 
-                    style={{backgroundColor: '#272a2b'}} 
-                    className='p-2 border border-[#343738] flex items-start gap-4 justify-between rounded-xl max-w-xl w-full mt-2'
+                    style={{backgroundColor:'#272a2b'}} 
+                    className='p-2 border border-[#343738] flex items-start gap-4 justify-between rounded-xl max-w-xl w-full md:mt-2'
                 >
                     {userDetail && <Image alt='user' onClick={toggleSidebar} src={userDetail?.picture} width={32} height={32} className='rounded-full cursor-pointer'/>}
                     <div className='flex gap-3 w-full items-start'>
@@ -135,7 +135,7 @@ const ChartView = () => {
                             value={userInput}
                             onChange={(e) => setUserInput(e.target.value)}
                             placeholder={Lookup.INPUT_PLACEHOLDER} 
-                            className='resize-none flex-1/2 w-full h-16 max-h-28 outline-none bg-transparent'
+                            className='resize-none md:text-base text-sm flex-1/2 w-full md:h-16 h-14 max-h-28 outline-none bg-transparent'
                         />
                         {userInput && <ArrowUp
                             onClick={() => onGenerate(userInput)}

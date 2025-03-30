@@ -32,6 +32,8 @@ export default async function RootLayout({ children }) {
                 "--sidebar-width" : "18rem",
                 "--sidebar-width-mobile": "20rem",
               }}
+              
+            
             >
               <div className="flex w-full">
                 <AppSideBar/>

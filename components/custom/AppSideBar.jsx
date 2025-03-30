@@ -7,19 +7,29 @@ import { MessageCircleCode } from 'lucide-react'
 import WorkSpaceHistory from './WorkSpaceHistory'
 import SideBarFooter from './SideBarFooter'
 import { UserDetailContext } from '@/context/userDetailContext'
+import { usePathname, useRouter } from 'next/navigation'
 
 const AppSideBar = () => {
+    const router = useRouter();
     const {userDetail,setUserDetail} = useContext(UserDetailContext);
+    const path = usePathname();
+    const handleClick = () => {
+        if(path !== '/'){
+            router.push('/');
+        }
+        return;
+    }
+
     
     return (
-        <Sidebar className={'bg-[#141414] border-none outline-none'}>
-            <SidebarHeader className={''}>
-                <Button className={'mt-5 bg-white px-2 py-1 text-black cursor-pointer hover:bg-gray-100 transition-all flex items-center'}>
-                    <MessageCircleCode className=''/> <span className='text-lg'>Start New Chat</span>
+        <Sidebar className={'outline-none border-none'}>
+            <SidebarHeader className={`bg-[#171614] px-10 `}>
+                <Button onClick = {handleClick} disabled={path == '/'}   className={'mt-5 bg-white  text-black cursor-pointer hover:bg-gray-100 transition-all flex items-center'}>
+                    <MessageCircleCode className=''/> <span className='text-sm'>Start New Chat</span>
                 </Button>
             </SidebarHeader>
 
-            <SidebarContent className={'thin-scrollbar overflow-y-scroll'}>
+            <SidebarContent className={`thin-scrollbar bg-[#171614] overflow-y-scroll`}>
                 <SidebarGroup />
                     <WorkSpaceHistory/>
                 <SidebarGroup />

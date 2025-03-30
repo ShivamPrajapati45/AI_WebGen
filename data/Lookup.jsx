@@ -1,9 +1,9 @@
 export default{
-    SUGGESTIONS: ['Create ToDo App in React', 'Create Budget Track App', 'Create Gym Managment Portal Dashboard', 'Create Quizz App On History', 'Create Login Signup Screen'],
+    SUGGESTIONS: ['Create ToDo App in React', 'Create Budget Track App', 'Create Gym Management Portal Dashboard', 'Create Quiz App', 'Create Login Signup Page'],
     HERO_HEADING: 'What do you want to build?',
-    HERO_DESC: 'Prompt, run, edit, and deploy full-stack web apps.',
+    HERO_DESC: 'Prompt, run, edit, and deploy web apps.',
     INPUT_PLACEHOLDER: 'What you want to build?',
-    SIGNIN_HEADING: 'Continue With Bolt.New 2.0',
+    SIGNIN_HEADING: 'Continue With WebGen',
     SIGNIN_SUBHEADING: 'To use Bolt you must log into an existing account or create one.',
     SIGNIn_AGREEMENT_TEXT: 'By using WebGen, you agree to the collection of usage data for analytics.',
     PRICING_DESC:'Start with a free account to speed up your workflow on public projects or boost your entire team with instantly-opening production environments.',

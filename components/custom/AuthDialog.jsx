@@ -23,7 +23,7 @@ const AuthDialog = ({ openDialog,closeDialog }) => {
     
     const googleLogin = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
-        // console.log(tokenResponse);
+
         const userInfo = await axios.get(
             'https://www.googleapis.com/oauth2/v3/userinfo',
             { headers: { Authorization: 'Bearer '+tokenResponse?.access_token } },
@@ -37,6 +37,7 @@ const AuthDialog = ({ openDialog,closeDialog }) => {
             picture: user?.picture,
             uid: uuid4()
         });
+
         // storing to localstorage preventing from page refresh
         if(typeof window !== undefined){
             localStorage.setItem('user', JSON.stringify(user))
@@ -58,19 +59,17 @@ const AuthDialog = ({ openDialog,closeDialog }) => {
             onOpenChange={closeDialog}
             
         >
-            <DialogContent className={'border-2 border-gray-500 rounded-lg bg-[#323438] p-5 w-[400px] md:w-[500px] lg:w-[600px] xl:w-[700px]'} >
+            <DialogContent className={'border-2 border-gray-500 flex justify-center items-center my-auto rounded-lg md:h-[200px] bg-[#323438] p-5 w-[400px] md:w-[450px] lg:w-[500px] xl:w-[500px]'} >
                 <DialogHeader>
                 <DialogTitle></DialogTitle>
                 <DialogDescription>
                     <div className='flex flex-col items-center justify-center gap-3'>
-                        <h2 className='font-bold text-2xl text-center text-white'>{Lookup.SIGNIN_HEADING}</h2>
-                        <p className='mt-2 text-center text-lg'>{Lookup.SIGNIN_HEADING}</p>
+                        <h2 className='font-bold mt-1 text-xl md:text-2xl text-center text-white'>{Lookup.SIGNIN_HEADING}</h2>
                         <Button 
                             onClick={googleLogin} 
-                            className={'bg-blue-500 cursor-pointer outline-none border-none text-white hover:bg-blue-400 mt-3'}>
+                            className={'bg-blue-600 cursor-pointer outline-none border-none text-white transition-all duration-200 hover:bg-blue-500 mt-1'}>
                                 Sign in With Google
                             </Button>
-                        <p>{Lookup?.SIGNIn_AGREEMENT_TEXT}</p>
                     </div>
                 </DialogDescription>
                 </DialogHeader>

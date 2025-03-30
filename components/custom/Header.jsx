@@ -9,8 +9,7 @@ import { LucideDownload, Rocket } from 'lucide-react'
 import Link from 'next/link'
 import { ActionContext } from '@/context/actionContext'
 import AuthDialog from './AuthDialog'
-import { SidebarProvider, SidebarTrigger } from '../ui/sidebar'
-import AppSideBar from './AppSideBar'
+import { SidebarTrigger } from '../ui/sidebar'
 
 
 const Header = () => {
@@ -36,44 +35,57 @@ const Header = () => {
             }else{
                 setScrolled(false);
             }
-            // console.log(window.scrollY);
         };
-        // window.addEventListener('scroll', handleScroll);
-        // return () => window.removeEventListener('scroll',handleScroll);
+        window.addEventListener('scroll',handleScroll);
+        return () => {
+            window.removeEventListener('scroll',handleScroll);
+        }
     },[])
     
 
 
     return (
-        <header className="sticky top-0 z-50 shadow-md flex items-center justify-between px-8 py-3">
+        <header className={`${scrolled ? 'bg-[#2a2a2b] transition-all duration-200' : ''} sticky top-0 z-50 shadow-md flex items-center justify-between md:justify-between md:gap-10 w-full px-3 md:px-8 py-3`}>
             {/* Sidebar Trigger - Top Left */}
-            <div className='flex gap-3 items-center justify-center'>
-                <SidebarTrigger className="p-2 rounded-full hover:bg-gray-700 transition duration-300 cursor-pointer" />
+            <div className='flex md:gap-3 items-center justify-center'>
+                <SidebarTrigger className="h-10 w-10 rounded-full hover:bg-[#383838] transition duration-300 cursor-pointer" />
 
                 {/* Logo */}
-                <Link href={"/"} className="text-white font-semibold text-lg">
+                <Link href={"/"} className="font-semibold text-sm md:text-lg text-blue-500">
                     WebGEN
                 </Link>
             </div>
 
             {/* Auth or User Profile */}
-            {!userDetail?.name ? <div className='flex gap-4'>
-                <Button 
-                    onClick = {() => setOpenDialog(true)}
-                    variant={'ghost'} className={'cursor-pointer hover:bg-[#333333] transition-all duration-200 uppercase'}>Sign In</Button>
-                <Button 
-                    onClick = {() => setOpenDialog(true)}
-                    className={'text-white cursor-pointer uppercase hover:bg-blue-700 bg-blue-800 transition-all'}>Get Started</Button>
-            </div> : path?.includes('workspace') && <div className='flex items-center gap-2'>
-                <Button 
-                    onClick={() => onActionBtn('export')} 
-                    className={'cursor-pointer text-white hover:bg-gray-700 transition-all duration-300'}><LucideDownload/>Export</Button>
-                <Button 
-                    onClick={() => onActionBtn('deploy')} 
-                    className={'bg-blue-500 cursor-pointer text-white hover:bg-blue-600'}><Rocket/> Deploy</Button>
+            <div className='flex items-center justify-center'>
+                {!userDetail?.name ? <div className='flex gap-2 items-center justify-end'>
+                    <Button 
+                        onClick = {() => setOpenDialog(true)}
+                        className={'cursor-pointer text-xs md:text-base px-2.5  hover:bg-blue-700 bg-blue-800 transition-all duration-200 uppercase'}>Sign In</Button>
+                    <Button 
+                        onClick = {() => setOpenDialog(true)}
+                        className={'text-white cursor-pointer px-3 text-xs md:text-base uppercase hover:bg-blue-700 bg-blue-800 transition-all'}>Get Started</Button>
+                </div> : path?.includes('workspace') && <div className='flex items-center justify-center gap-2'>
+                    <Button 
+                        onClick={() => onActionBtn('export')} 
+                        className={'cursor-pointer bg-[#2a2a2b] text-white hover:bg-gray-700 transition-all duration-300'}
+                    >
+                            <LucideDownload/>
+                            <span className='hidden md:block'>Export</span>
+                    </Button>
+                    <Button 
+                        onClick={() => onActionBtn('deploy')} 
+                        className={'bg-blue-500 cursor-pointer text-white hover:bg-blue-600'}
+                    >
+                        <Rocket className=''/> 
+                        <span className='hidden md:block'>Deploy</span>
+                    </Button>
+                </div>
+                }
             </div>
-            }
-            {userDetail && <Image src={userDetail?.picture} alt='user' width={40} height={40} className='rounded-full'/>}
+
+            {/* {userDetail && <Image src={userDetail?.picture} alt='user' width={40} height={40} className='rounded-full'/>} */}
+            {userDetail && <img src={userDetail?.picture} alt='user' className='rounded-full h-8 w-8'/>}
 
             <AuthDialog openDialog={openDialog} closeDialog={(e) => setOpenDialog(e)} />
         </header>
