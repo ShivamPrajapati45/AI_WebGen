@@ -29,6 +29,7 @@ const ChartView = () => {
     const UpdateMessages = useMutation(api.workspace.updateMessages);
     const UpdateToken = useMutation(api.users.updateToken);
     const {toggleSidebar} = useSidebar();
+    const [isFocus, setIsFocus] = useState(false)
 
     useEffect(() => {
         id && getWorkSpaceData();
@@ -137,15 +138,17 @@ const ChartView = () => {
                 
                 <div 
                     style={{backgroundColor:'#272a2b'}} 
-                    className='p-2 border border-[#343738] flex items-start gap-4 justify-between rounded-xl max-w-xl w-full md:mt-2'
+                    className={`${isFocus && ' border-[1.5px] border-blue-400 transition-all'} p-2 border border-[#343738] flex items-start gap-4 justify-between rounded-xl max-w-xl w-full md:mt-2`}
                 >
                     {userDetail && <Image alt='user' onClick={toggleSidebar} src={userDetail?.picture} width={32} height={32} className='rounded-full cursor-pointer'/>}
                     <div className='flex gap-3 w-full items-start'>
                         <textarea 
+                            onFocus={() => setIsFocus(true)}
+                            onBlur={() => setIsFocus(false)}
                             value={userInput}
                             onChange={(e) => setUserInput(e.target.value)}
                             placeholder={Lookup.INPUT_PLACEHOLDER} 
-                            className='resize-none md:text-base text-sm flex-1/2 w-full md:h-16 h-14 max-h-28 outline-none bg-transparent'
+                            className='resize-none border-none md:text-base text-sm flex-1/2 w-full md:h-16 h-14 max-h-28 outline-none bg-transparent'
                         />
                         {userInput && <ArrowUp
                             onClick={() => onGenerate(userInput)}

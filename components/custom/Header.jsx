@@ -45,7 +45,7 @@ const Header = () => {
 
 
     return (
-        <header className={`${scrolled ? 'bg-[#2a2a2b] transition-all duration-200' : ''} sticky top-0 z-50 shadow-md flex items-center justify-between md:justify-between md:gap-10 w-full px-3 md:px-8 py-3`}>
+        <header className={`${scrolled ? 'bg-[#2a2a2b] transition-all duration-200' : ''} md:bg-transparent sticky top-0 z-50 shadow-md flex items-center justify-between md:justify-between md:gap-10 w-full px-3 md:px-8 py-3`}>
             {/* Sidebar Trigger - Top Left */}
             <div className='flex md:gap-3 items-center justify-center'>
                 <SidebarTrigger className="h-10 w-10 rounded-full hover:bg-[#383838] transition duration-300 cursor-pointer" />
@@ -75,7 +75,7 @@ const Header = () => {
                     </Button>
                     <Button 
                         onClick={() => onActionBtn('deploy')} 
-                        className={'bg-blue-500 cursor-pointer text-white hover:bg-blue-600'}
+                        className={'bg-blue-600 cursor-pointer text-white hover:bg-blue-500'}
                     >
                         <Rocket className=''/> 
                         <span className='hidden md:block'>Deploy</span>

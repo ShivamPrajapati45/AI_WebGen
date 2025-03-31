@@ -110,13 +110,13 @@ const CodeView = () => {
                 <div className='flex items-center w-full flex-wrap shrink-0 py-1 px-3 gap-3 rounded-full'>
                     <button
                         onClick={() => setActiveTab('code')}
-                        className={`flex text-sm items-center font-semibold gap-2 justify-center cursor-pointer px-2 py-1 bg-[#30302f] uppercase rounded-full ${activeTab === 'code' && 'text-black bg-white'}`}>
+                        className={`flex text-sm items-center gap-2 justify-center cursor-pointer px-2 py-1 bg-[#30302f] uppercase rounded-full transition-all duration-200 ${activeTab === 'code' ? 'text-black bg-white' : 'hover:bg-[#3d3d3d]'}`}>
                             <CodeXml size={20} className={`${activeTab == 'code' && 'text-purple-500 font-bold'}`}/> 
                             <span>code</span>
                     </button>
                     <button 
                         onClick={() => setActiveTab('preview')}
-                        className={`flex text-sm font-semibold items-center justify-center gap-2 cursor-pointer bg-[#30302f] uppercase rounded-full px-2 py-1 ${activeTab === 'preview' && 'text-black bg-white'}`}>
+                        className={`flex text-sm transition-all duration-200  items-center justify-center gap-2 cursor-pointer bg-[#30302f] uppercase rounded-full px-2 py-1 ${activeTab === 'preview' ? 'text-black bg-white' : 'hover:bg-[#3d3d3d]'}`}>
                             <Eye size={20} className={`${activeTab == 'preview' && 'text-purple-500 font-bold'}`}/> 
                             <span>preview</span>
                     </button>
