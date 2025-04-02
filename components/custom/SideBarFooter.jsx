@@ -18,11 +18,11 @@ const SideBarFooter = () => {
             name: 'Help Center',
             icon: HelpCircle
         },
-        {
-            name: 'Subscription',
-            icon: Wallet,
-            path: '/pricing'
-        },
+        // {
+        //     name: 'Subscription',
+        //     icon: Wallet,
+        //     path: '/pricing'
+        // },
         {
             name: 'Sign Out',
             icon: LogOut,
@@ -57,7 +57,7 @@ const SideBarFooter = () => {
         <div className='p-1'>
             {options.map((option,index) => (
                 <Button 
-                    onClick={() => optionClick(option)}
+                    // onClick={() => optionClick(option)}
                     variant={'ghost'} 
                     className={'w-full text-sm my-1 opacity-80 hover:opacity-100 bg-[#141313] cursor-pointer hover:bg-[#242424] text-white flex justify-start'} 
                     key={index}

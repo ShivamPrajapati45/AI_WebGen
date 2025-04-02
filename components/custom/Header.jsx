@@ -75,7 +75,7 @@ const Header = () => {
                     </Button>
                     <Button 
                         onClick={() => onActionBtn('deploy')} 
-                        className={'bg-blue-600 cursor-pointer text-white hover:bg-blue-500'}
+                        className={'bg-blue-600 hidden cursor-pointer text-white hover:bg-blue-500'}
                     >
                         <Rocket className=''/> 
                         <span className='hidden md:block'>Deploy</span>
@@ -85,7 +85,7 @@ const Header = () => {
             </div>
 
             {/* {userDetail && <Image src={userDetail?.picture} alt='user' width={40} height={40} className='rounded-full'/>} */}
-            {userDetail && <img src={userDetail?.picture} alt='user' className='rounded-full h-8 w-8'/>}
+            {userDetail && <Image src={userDetail?.picture} height={35} width={35} alt='user' className='rounded-full'/>}
 
             <AuthDialog openDialog={openDialog} closeDialog={(e) => setOpenDialog(e)} />
         </header>
