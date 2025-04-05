@@ -107,9 +107,9 @@ const Hero = () => {
                     <div 
                         onMouseEnter={() => setBtnHover(true)}
                         onMouseLeave={() => setBtnHover(false)}
+                        onClick={() => onGenerate(userInput)}
                         className='px-1 rounded-md bg-sky-600 transition-all duration-200 h-9 cursor-pointer w-13 flex justify-center items-center'>
                         <ArrowRight 
-                            onClick={() => onGenerate(userInput)}
                             className={`${btnHover ? 'translate-x-1.5 ' : ''} transition-all duration-200 ease-in-out`}
                         />
                     </div>
