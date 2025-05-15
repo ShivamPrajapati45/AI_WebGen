@@ -109,7 +109,7 @@ const ChartView = () => {
     }
 
     return (
-        <div className='relative h-[85vh]  py-1 w-full flex flex-col md:px-5 px-2'>
+        <div className='relative h-[85vh] py-1 w-full flex flex-col md:px-5 px-2'>
             <div className='flex-1 overflow-y-scroll thin-scrollbar '>
                 {messages?.length > 0 && messages?.map((msg,index) => (
                     <div 

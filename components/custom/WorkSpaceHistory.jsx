@@ -70,7 +70,7 @@ const WorkSpaceHistory = () => {
                         >
                             <h2 
                                 onClick={toggleSidebar} 
-                                className={`text-sm opacity-60 text-wrap  border-gray-600 py-2 text-center hover:opacity-100 hover:bg-[#222222] my-1.5 rounded-md cursor-pointer ${isActive ? 'bg-[#222222] opacity-100 text-blue-400' : ''}`}>
+                                className={`text-sm opacity-60 text-wrap  border-gray-600 py-2 text-center hover:opacity-100 hover:bg-[#2b2a2a] my-1.5 rounded-md cursor-pointer ${isActive ? 'bg-[#2b2a2a] opacity-100 text-blue-400' : ''}`}>
                                     {workspace?.messages[0]?.content}
                                 </h2>
                         </Link>

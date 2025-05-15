@@ -15,7 +15,7 @@ import { ActionContext } from '@/context/actionContext'
 const Hero = () => {
     const [userInput, setUserInput] = useState('');
     const {messages, setMessages} = useContext(MessagesContext); 
-    const {userDetail, setUserDetail,isLoading,setIsLoading} = useContext(UserDetailContext);
+    const {userDetail} = useContext(UserDetailContext);
     const {action,setAction} = useContext(ActionContext);
     const [openDialog, setOpenDialog] = useState(false);
     const CreateWorkspace = useMutation(api.workspace.CreateWorkspace);
