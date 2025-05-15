@@ -9,6 +9,7 @@ import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useRouter } from 'next/navigation'
 import Colors from '@/data/Colors'
+import {motion} from 'framer-motion'
 import { ActionContext } from '@/context/actionContext'
 
 
@@ -16,7 +17,7 @@ const Hero = () => {
     const [userInput, setUserInput] = useState('');
     const {messages, setMessages} = useContext(MessagesContext); 
     const {userDetail} = useContext(UserDetailContext);
-    const {action,setAction} = useContext(ActionContext);
+    const { action,setAction } = useContext(ActionContext);
     const [openDialog, setOpenDialog] = useState(false);
     const CreateWorkspace = useMutation(api.workspace.CreateWorkspace);
     const router = useRouter();
@@ -24,6 +25,7 @@ const Hero = () => {
     const [hoverIndex, setHoverIndex] = useState(null);
     const [isFocused, setIsFocused] = useState(false);
     const [loading, setLoading] = useState(false);
+    
 
     const onGenerate = async (input) => {
         try{
@@ -59,10 +61,6 @@ const Hero = () => {
         }finally{
             setLoading(false);
         }
-        
-
-        // console.log(workspaceId ); 
-
     };
 
     const getRandomColor = () => {
@@ -73,7 +71,6 @@ const Hero = () => {
         }
         return color;
     };
-
 
     return (
 
@@ -104,7 +101,7 @@ const Hero = () => {
                         className='resize-none w-full font-light text-sm md:text-lg h-24 md:h-32 max-h-44 bg-transparent  outline-none' 
                     />
                     {userInput && 
-                    <div 
+                    <motion.div 
                         onMouseEnter={() => setBtnHover(true)}
                         onMouseLeave={() => setBtnHover(false)}
                         onClick={() => onGenerate(userInput)}
@@ -112,7 +109,7 @@ const Hero = () => {
                         <ArrowRight 
                             className={`${btnHover ? 'translate-x-1.5 ' : ''} transition-all duration-200 ease-in-out`}
                         />
-                    </div>
+                    </motion.div>
                     }
                     
                 </div>
