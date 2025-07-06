@@ -72,7 +72,7 @@ const CodeView = () => {
             const result = await axios.post('/api/gen-ai-code', {
                 prompt: prompt
             });
-            console.log('result: ',result)
+            // console.log('result: ',result)
             const aiResp = result?.data
     
             const mergedFiles = {...Lookup.DEFAULT_FILE,...aiResp?.files};

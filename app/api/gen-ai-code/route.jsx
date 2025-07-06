@@ -8,6 +8,7 @@ export const config = {
 export async function POST(req){
 
     const {prompt} = await req.json();
+    
     if(!prompt){
         throw new Error('Prompt is required')
     }
