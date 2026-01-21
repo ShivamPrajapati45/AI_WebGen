@@ -10,7 +10,7 @@ import { useConvex, useMutation } from 'convex/react';
 import { ArrowRight, ArrowUp, Link, Loader2Icon } from 'lucide-react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import ReactMarkDown from 'react-markdown'
 import { useSidebar } from '../ui/sidebar';
 import { toast } from 'sonner';
@@ -30,6 +30,15 @@ const ChartView = () => {
     const UpdateToken = useMutation(api.users.updateToken);
     const {toggleSidebar} = useSidebar();
     const [isFocus, setIsFocus] = useState(false)
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages, loading]);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
 
     useEffect(() => {
         id && getWorkSpaceData();
@@ -86,14 +95,9 @@ const ChartView = () => {
             setLoading(false);
         }catch(err){
             toast.error('Something went wrong while generating response')
-            console.log('Error in getting ai response',err);
-        }finally{
-            toast.error('Something went wrong while generating response')
             setLoading(false);
         }
         
-
-        // console.log(result.data.result);
     }
 
     const onGenerate = async (userInput) => {
@@ -117,20 +121,26 @@ const ChartView = () => {
                             backgroundColor: '#272829'
                         }}
                         key={index} 
-                        className='md:p-3 p-2 rounded-lg mb-2 text-sm flex items-center gap-2 leading-7'
+                        className='md:p-2.5 p-2 rounded-lg mb-2 text-[13px] md:text-sm flex items-start gap-3 leading-6 border border-white/5 shadow-sm'
                     >
-                        {msg?.role === 'user' && <Image src={userDetail?.picture} alt='userImage' width={35} height={35} className='rounded-full' />}
-                        <span className=' md:text-base text-wrap'>
-                            <ReactMarkDown>{msg?.content}</ReactMarkDown>
-                        </span>
+                        {msg?.role === 'user' && <Image src={userDetail?.picture} alt='userImage' width={30} height={30} className='rounded-full mt-0.5' />}
+                        <div className='flex-1 text-wrap prose prose-invert max-w-none prose-p:leading-relaxed prose-pre:bg-black/50 prose-pre:p-2 prose-pre:rounded-md'>
+                            <ReactMarkDown>
+                                {msg?.content}
+                            </ReactMarkDown>
+                        </div>
                     </div>
                 ))}
-                {loading && <div style={{
-                    backgroundColor:Colors.BACKGROUND
-                }} className='md:p-3 p-2 rounded-lg md:mb-2 flex items-start gap-3'>
-                    <Loader2Icon className='animate-spin'/>
-                    <h2 className=''>Generating response...</h2>
+                {loading && <div 
+                    className='rounded-lg mb-2 flex items-center gap-2 w-fit ml-2'
+                >
+                    <div className="flex gap-1.5">
+                        <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-duration:0.8s]" style={{animationDelay: '0ms'}}></div>
+                        <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-duration:0.8s]" style={{animationDelay: '150ms'}}></div>
+                        <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-duration:0.8s]" style={{animationDelay: '300ms'}}></div>
+                    </div>
                 </div> }
+                <div ref={messagesEndRef} />
             </div>
 
             {/* input section */}
@@ -138,16 +148,21 @@ const ChartView = () => {
                 
                 <div 
                     style={{backgroundColor:'#272a2b'}} 
-                    className={`${isFocus && ' border-[1.5px] border-blue-400 transition-all'} p-2 border border-[#343738] flex items-start gap-4 justify-between rounded-xl max-w-xl w-full md:mt-2`}
+                    className='p-4 border border-blue-500/50 flex items-start gap-4 justify-between rounded-xl max-w-xl w-full md:mt-2 transition-all duration-300'
                 >
-                    {userDetail && <Image alt='user' onClick={toggleSidebar} src={userDetail?.picture} width={32} height={32} className='rounded-full cursor-pointer'/>}
                     <div className='flex gap-3 w-full items-start'>
                         <textarea 
                             onFocus={() => setIsFocus(true)}
                             onBlur={() => setIsFocus(false)}
                             value={userInput}
                             onChange={(e) => setUserInput(e.target.value)}
-                            placeholder={Lookup.INPUT_PLACEHOLDER} 
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' && !e.shiftKey) {
+                                    e.preventDefault();
+                                    onGenerate(userInput);
+                                }
+                            }}
+                            placeholder={'build Anything'} 
                             className='resize-none border-none md:text-base text-sm flex-1/2 w-full md:h-16 h-14 max-h-28 outline-none bg-transparent'
                         />
                         {userInput && <ArrowUp

@@ -1,7 +1,4 @@
 "use client"
-import AppSideBar from '@/components/custom/AppSideBar'
-import Header from '@/components/custom/Header'
-import { SidebarProvider } from '@/components/ui/sidebar'
 import { ActionContext } from '@/context/actionContext'
 import { MessagesContext } from '@/context/messagesContext'
 import { UserDetailContext } from '@/context/userDetailContext'

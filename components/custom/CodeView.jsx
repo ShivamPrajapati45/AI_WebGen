@@ -10,10 +10,45 @@ import { useParams } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 import { countToken } from './ChartView'
 import { UserDetailContext } from '@/context/userDetailContext'
-import SandpackPreviewClient from './SandpackPreviewClient'
 import { ActionContext } from '@/context/actionContext'
+import SandpackPreviewClient from './SandpackPreviewClient'
 import { Button } from '../ui/button'
 import toast from 'react-hot-toast'
+import { useSandpack } from '@codesandbox/sandpack-react'
+
+
+const SandpackActionHandler = () => {
+    const { action, setAction } = useContext(ActionContext);
+    const { sandpack } = useSandpack();
+
+    useEffect(() => {
+        if (action) {
+            handleAction();
+        }
+    }, [action]);
+
+    const handleAction = async () => {
+        if (action?.actionType === 'export' || action?.actionType === 'deploy') {
+            const client = sandpack?.clients?.['react'] || Object.values(sandpack?.clients || {})[0]; 
+            if (client) {
+                try {
+                    const result = await client.getCodeSandboxURL();
+                    if (action?.actionType === 'deploy') {
+                        window.open(`https://${result?.sandboxId}.csb.app/`);
+                    } else if (action?.actionType === 'export') {
+                        window.open(result?.editorUrl);
+                    }
+                } catch (error) {
+                    toast.error('Error getting export URL')
+                }
+                // Reset action after handling
+                setAction(null);
+            }
+        }
+    }
+
+    return null;
+}
 
 
 const CodeView = () => {
@@ -27,36 +62,61 @@ const CodeView = () => {
     const convex = useConvex();
     const {id} = useParams();
     const [loading,setLoading] = useState(false);
+    const [fileLoading, setFileLoading] = useState(false);
     const UpdateToken = useMutation(api.users.updateToken);
+    const isGeneratingRef = React.useRef(false);
+    const [loadingText, setLoadingText] = useState('Generating Your Code');
+    const loadingMessages = [
+        "Understanding your requirements...",
+        "Designing the application structure...",
+        "Generating clean and reusable code...",
+        "Applying UI and logic...",
+        "Finalizing the output..."
+    ];
+
+
+    useEffect(() => {
+        let interval;
+        if (loading) {
+            let index = 0;
+            setLoadingText(loadingMessages[0]);
+            interval = setInterval(() => {
+                index = (index + 1) % loadingMessages.length;
+                setLoadingText(loadingMessages[index]);
+            }, 3500);
+        }
+        return () => interval && clearInterval(interval);
+    }, [loading]);
+
 
     useEffect(() => {
         id&&getFiles();
     },[id,userDetail]);
 
-    useEffect(() =>{
-        setActiveTab('preview')
+    useEffect(()=>{
+        if(action?.actionType == 'deploy'){
+             setActiveTab('preview')
+        }
     },[action]);
 
     const getFiles = async () => {
         try{
-            setLoading(true);
+            setFileLoading(true);
             const result = await convex.query(api.workspace.getWorkSpace,{
                 workspaceId: id
             });
 
             const mergedFiles = {...Lookup.DEFAULT_FILE,...result?.fileData};
             setFiles(mergedFiles);
-            setLoading(false);
+            setFileLoading(false);
         }catch(err){
             toast.error('Something went wrong while fetching files')
-            console.log('Error in fetching files',err);
-        }finally{
-            setLoading(false);
+            setFileLoading(false);
         }
     }
 
     useEffect(() => {
-        if(messages?.length > 0){
+        if(messages?.length > 0 && !isGeneratingRef.current){
             const role = messages[messages?.length - 1].role;
             if(role === 'user'){
                 generateAiCode();
@@ -65,14 +125,18 @@ const CodeView = () => {
     },[messages]);
 
     const generateAiCode = async () => {
+        if (isGeneratingRef.current) {
+            return;
+        }
+
+        isGeneratingRef.current = true;
+        setLoading(true);
+        
         try{
-            setLoading(true);
-            console.log('Generating')
             const prompt = JSON.stringify(messages)+" "+Prompt.CODE_GEN_PROMPT;
             const result = await axios.post('/api/gen-ai-code', {
                 prompt: prompt
             });
-            // console.log('result: ',result)
             const aiResp = result?.data
     
             const mergedFiles = {...Lookup.DEFAULT_FILE,...aiResp?.files};
@@ -83,7 +147,6 @@ const CodeView = () => {
             });
     
             const token = Number(userDetail?.token) - Number(countToken(JSON.stringify(aiResp)));
-                    // Updating token
             await UpdateToken({
                 userId: userDetail?._id,
                 token: token
@@ -94,12 +157,11 @@ const CodeView = () => {
             }));
     
             setActiveTab('code');
-            setLoading(false);
         }catch(err){
             toast.error('Error in generating code')
-            console.log('Error in generating code',err);
         }finally{
             setLoading(false);
+            isGeneratingRef.current = false;
         }
         
     }; 
@@ -136,22 +198,30 @@ const CodeView = () => {
                 }}
             >
                 <SandpackLayout>
-                    {activeTab == 'code' ? <>
+                    <div className='flex w-full h-full' style={{display: activeTab === 'code' ? 'flex' : 'none'}}>
                         <SandpackFileExplorer style={{height: '75vh'}}/>
                         <SandpackCodeEditor style={{height: '75vh'}}/>
-                    </> :
-                    <>
-                        <SandpackPreviewClient style={{height: '70vh'}}/>
-                    </>
-                    }
+                    </div>
+                    <div className='w-full h-full' style={{display: activeTab === 'preview' ? 'block' : 'none'}}>
+                        <SandpackPreviewClient style={{height: '75vh'}}/>
+                    </div>
                 </SandpackLayout>
+                <SandpackActionHandler />
             </SandpackProvider>
 
-            {/* loader */}
-            {loading && <div className='p-10 bg-gray-800 opacity-85 absolute top-0 rounded-lg w-full h-full flex items-center justify-center'>
-                <Loader2Icon size={28} className='animate-spin text-white'/>
-                <h2 className='text-white'>Generating your files...</h2>
-            </div>}
+            {/* Enhanced loader */}
+            {loading && (
+                <div className='p-10 bg-[#151515] absolute inset-0 top-0 left-0 right-0 bottom-0 rounded-lg w-full h-full flex flex-col items-center justify-center gap-6 z-50'>
+                    <div className="relative">
+                        <Loader2Icon size={48} className='animate-spin text-blue-500'/>
+                        <div className="absolute inset-0 bg-blue-500/20 rounded-full animate-ping"></div>
+                    </div>
+                    <div className="text-center space-y-2">
+                        <h2 className='text-white text-2xl font-bold'>{loadingText}</h2>
+                        <p className='text-blue-400 text-xs mt-2'>This may take a few moments</p>
+                    </div>
+                </div>
+            )}
             
 
         </div>

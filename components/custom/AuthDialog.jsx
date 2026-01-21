@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
@@ -29,7 +28,6 @@ const AuthDialog = ({ openDialog,closeDialog }) => {
             { headers: { Authorization: 'Bearer '+tokenResponse?.access_token } },
         );
     
-        // console.log(userInfo);
         const user = userInfo?.data;
         await CreateUser({
             name: user?.name,
@@ -45,10 +43,14 @@ const AuthDialog = ({ openDialog,closeDialog }) => {
         toast.success('Successfully loggedIn');
         setUserDetail(userInfo?.data);
         closeDialog(false);
+        
+        // Reload to ensure proper state initialization
+        setTimeout(() => {
+            window.location.reload();
+        }, 500);
 
         },
         onError: errorResponse => {
-            console.log(errorResponse);
             toast.error('Something went wrong !!');
         },
     });
@@ -62,16 +64,14 @@ const AuthDialog = ({ openDialog,closeDialog }) => {
             <DialogContent className={'border-2 border-gray-500 flex justify-center items-center my-auto rounded-lg md:h-[200px] bg-[#323438] p-5 w-[400px] md:w-[450px] lg:w-[500px] xl:w-[500px]'} >
                 <DialogHeader>
                 <DialogTitle></DialogTitle>
-                <DialogDescription>
-                    <div className='flex flex-col items-center justify-center gap-3'>
-                        <h2 className='font-bold mt-1 text-xl md:text-2xl text-center text-white'>{Lookup.SIGNIN_HEADING}</h2>
-                        <Button 
-                            onClick={googleLogin} 
-                            className={'bg-blue-600 cursor-pointer outline-none border-none text-white transition-all duration-200 hover:bg-blue-500 mt-1'}>
-                                Sign in With Google
-                            </Button>
-                    </div>
-                </DialogDescription>
+                <div className='flex flex-col items-center justify-center gap-3'>
+                    <h2 className='font-bold mt-1 text-xl md:text-2xl text-center text-white'>{Lookup.SIGNIN_HEADING}</h2>
+                    <Button 
+                        onClick={googleLogin} 
+                        className={'bg-blue-600 cursor-pointer outline-none border-none text-white transition-all duration-200 hover:bg-blue-500 mt-1'}>
+                            Sign in With Google
+                        </Button>
+                </div>
                 </DialogHeader>
             </DialogContent>
             </Dialog>

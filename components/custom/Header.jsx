@@ -61,9 +61,6 @@ const Header = () => {
                 {!userDetail?.name ? <div className='flex gap-2 items-center justify-end'>
                     <Button 
                         onClick = {() => setOpenDialog(true)}
-                        className={'cursor-pointer text-xs md:text-base px-2.5  hover:bg-blue-700 bg-blue-800 transition-all duration-200 uppercase'}>Sign In</Button>
-                    <Button 
-                        onClick = {() => setOpenDialog(true)}
                         className={'text-white cursor-pointer px-3 text-xs md:text-base uppercase hover:bg-blue-700 bg-blue-800 transition-all'}>Get Started</Button>
                 </div> : path?.includes('workspace') && <div className='flex items-center justify-center gap-2'>
                     <Button 
@@ -73,13 +70,13 @@ const Header = () => {
                             <LucideDownload/>
                             <span className='hidden md:block'>Export</span>
                     </Button>
-                    <Button 
+                    {/* <Button 
                         onClick={() => onActionBtn('deploy')} 
                         className={'bg-blue-600 hidden cursor-pointer text-white hover:bg-blue-500'}
                     >
                         <Rocket className=''/> 
                         <span className='hidden md:block'>Deploy</span>
-                    </Button>
+                    </Button> */}
                 </div>
                 }
             </div>

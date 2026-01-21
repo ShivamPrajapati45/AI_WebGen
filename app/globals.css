@@ -28,15 +28,14 @@
   }
 }
 
-
-@layer utilities{
-  .no-scrollbar::-webkit-scrollbar{
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
 
-  .no-scrollbar{
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none; 
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;
   }
 
   .thin-scrollbar::-webkit-scrollbar {
@@ -45,9 +44,7 @@
   }
 
   .thin-scrollbar::-webkit-scrollbar-thumb {
-    background-color: white;
+    background-color: #4b5563; /* Subtle gray */
     border-radius: 4px;
   }
 }
-
-

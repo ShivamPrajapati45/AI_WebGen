@@ -3,7 +3,7 @@ import { MessagesContext } from '@/context/messagesContext'
 import { UserDetailContext } from '@/context/userDetailContext'
 import Lookup from '@/data/Lookup'
 import { ArrowRight, Link } from 'lucide-react'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AuthDialog from './AuthDialog'
 import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
@@ -54,7 +54,6 @@ const Hero = () => {
             setLoading(false); 
 
         }catch(err){
-            console.error('Error:', err);
             toast.error('Something went wrong !!')
             setLoading(false);
             
@@ -72,13 +71,46 @@ const Hero = () => {
         return color;
     };
 
+    const [loadingText, setLoadingText] = useState('Creating Your Workspace');
+    const loadingMessages = [
+        "Initializing your workspace...",
+        "Setting up project environment...",
+        "Preparing necessary files...",
+        "Finalizing the setup...",
+        "Almost there, hang tight!"
+    ];
+
+    useEffect(() => {
+        let interval;
+        if (loading) {
+            let index = 0;
+            setLoadingText(loadingMessages[0]);
+            interval = setInterval(() => {
+                index = (index + 1) % loadingMessages.length;
+                setLoadingText(loadingMessages[index]);
+            }, 3500);
+        }
+        return () => interval && clearInterval(interval);
+    }, [loading]);
+
     return (
 
         <div className='relative flex flex-col mt-7 h-full w-full items-center justify-center gap-2'>
 
-            {/* Overlay loader */}
-            {loading && <div className='absolute inset-0 flex h-[100vh] w-[100vw] my-auto items-center justify-center bg-black/60 z-50'>
-                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+            {/* Enhanced overlay loader */}
+            {loading && <div className='fixed inset-0 flex h-screen w-screen items-center justify-center bg-black/70 backdrop-blur-sm z-50'>
+                    <div className="flex flex-col items-center gap-4 p-8 bg-gray-900/90 rounded-2xl border border-gray-700 shadow-2xl">
+                        <div className="relative">
+                            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500 border-solid"></div>
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                <div className="h-8 w-8 bg-blue-500/20 rounded-full animate-pulse"></div>
+                            </div>
+                        </div>
+                        <div className="text-center">
+                            <h3 className="text-xl font-semibold text-white mb-2">{loadingText}</h3>
+                            <p className="text-gray-400 text-sm">Setting up your project environment...</p>
+                        </div>
+                    </div>
                 </div>}
 
             <h2 className='font-bold text-xl md:text-3xl mx-auto'>{Lookup.HERO_HEADING}</h2>
@@ -127,15 +159,14 @@ const Hero = () => {
                             onMouseLeave={() => setHoverIndex(null)}
                             className='p-1.5 md:p-1 md:px-3 px-2 text-xs md:text-base cursor-pointer text-gray-400 hover:text-gray-200' 
                             style={{
-                                border: '2px solid', 
-                                borderRadius: hoverIndex === index ? '20px' : '100px',
-                                borderColor: hoverIndex === index 
-                                    ? 'transparent' 
-                                    : '#565657aa',  // Gray border by default
-                                borderImage: hoverIndex === index 
-                                    ? `linear-gradient(90deg, ${getRandomColor()}, ${getRandomColor()}) 1` 
-                                    : 'none',
-                                transition: 'border 0.3s, border-radius 0.3s'
+                                border: '2px solid transparent', 
+                                borderRadius: '100px',
+                                backgroundImage: hoverIndex === index 
+                                    ? `linear-gradient(#151515, #151515), linear-gradient(90deg, ${getRandomColor()}, ${getRandomColor()})` 
+                                    : 'linear-gradient(#151515, #151515), linear-gradient(90deg, #565657aa, #565657aa)',
+                                backgroundOrigin: 'border-box',
+                                backgroundClip: 'padding-box, border-box',
+                                transition: 'all 0.3s'
                             }}
                         >
                                 {suggestion}
