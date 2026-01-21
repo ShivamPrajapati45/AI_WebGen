@@ -133,7 +133,9 @@ const CodeView = () => {
         setLoading(true);
         
         try{
-            const prompt = JSON.stringify(messages)+" "+Prompt.CODE_GEN_PROMPT;
+            const lastUserMessage = messages[messages.length - 1]?.content || "";
+            const prompt = `User wants: ${lastUserMessage}\n${Prompt.CODE_GEN_PROMPT}`;
+            
             const result = await axios.post('/api/gen-ai-code', {
                 prompt: prompt
             });
@@ -158,7 +160,11 @@ const CodeView = () => {
     
             setActiveTab('code');
         }catch(err){
-            toast.error('Error in generating code')
+            if (err.response?.status === 429) {
+                toast.error('Rate limit exceeded. Please wait a minute before trying again.');
+            } else {
+                toast.error('Error in generating code')
+            }
         }finally{
             setLoading(false);
             isGeneratingRef.current = false;

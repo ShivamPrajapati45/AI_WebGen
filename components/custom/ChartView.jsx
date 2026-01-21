@@ -66,7 +66,9 @@ const ChartView = () => {
         try{
 
             setLoading(true);
-            const prompt = JSON.stringify(messages)+Prompt.CHAT_PROMPT;
+            const lastUserMessage = messages[messages.length - 1]?.content || "";
+            const prompt = `User wants: ${lastUserMessage}\n${Prompt.CHAT_PROMPT}`;
+            
             const result = await axios.post('/api/ai-chat',{
                 prompt: prompt
             });
@@ -94,7 +96,11 @@ const ChartView = () => {
             
             setLoading(false);
         }catch(err){
-            toast.error('Something went wrong while generating response')
+            if (err.response?.status === 429) {
+                toast.error('Rate limit exceeded. Please wait a minute before trying again.');
+            } else {
+                toast.error('Something went wrong while generating response');
+            }
             setLoading(false);
         }
         

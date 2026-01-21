@@ -30,8 +30,8 @@ const WorkSpaceHistory = () => {
                 userId: userDetail?._id
             });
             setWorkSpaceList(result);
-        }catch(err){
-            console.error('Failed to fetch workspaces history:', err)
+        } catch (err) {
+            // Silently handle or add toast if needed
         }
     
     }  

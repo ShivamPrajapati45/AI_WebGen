@@ -5,21 +5,21 @@ const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash",
+    model: process.env.NEXT_PUBLIC_MODAL || "gemini-2.0-flash",
 });
     
 const generationConfig = {
-    temperature: 1,
+    temperature: 0.2,
     topP: 0.95,
     topK: 40,
-    maxOutputTokens: 8192,
+    maxOutputTokens: 4096,
     responseMimeType: "text/plain",
 };
 const CodeGenerateConfig = {
-    temperature: 1,
+    temperature: 0.2,
     topP: 0.95,
     topK: 40,
-    maxOutputTokens: 8192,
+    maxOutputTokens: 4096,
     responseMimeType: "application/json",
 };
     

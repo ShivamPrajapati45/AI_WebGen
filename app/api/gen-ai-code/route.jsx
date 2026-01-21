@@ -20,7 +20,11 @@ export async function POST(req){
         return NextResponse.json(JSON.parse(resp));
 
     } catch (error) {
-        console.log('Something Went Wrong',error);
+        if (error?.status === 429) {
+            return NextResponse.json({
+                error: "Rate limit exceeded. Please wait a minute and try again."
+            }, { status: 429 });
+        }
         return NextResponse.json({error:error.message})
     }
 }
